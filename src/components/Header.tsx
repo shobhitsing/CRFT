@@ -58,14 +58,14 @@ export const Header: React.FC<HeaderProps> = ({
         {onToggleMobileSidebar && (
           <button
             type="button"
-            className="header-mobile-toggle mobile-sidebar-toggle-btn p-1 mr-1 text-[#64748b] hover:text-[#0f172a] rounded-lg"
+            className="mobile-header-menu-pill"
             onClick={onToggleMobileSidebar}
-            title="Open Navigation Menu"
+            title="Open menu"
+            aria-label="Open menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4 text-[#334155]" strokeWidth={2} />
           </button>
         )}
-
         {currentNav === 'products' ? (
           <>
             <button 

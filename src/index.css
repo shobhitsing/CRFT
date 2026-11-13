@@ -371,13 +371,41 @@ html, body {
   display: none !important;
 }
 
+.mobile-header-menu-pill {
+  display: none !important;
+}
+
 @media (max-width: 1023px) {
-  .mobile-sidebar-toggle-btn,
-  .header-mobile-toggle,
-  .products-mobile-toggle {
+  .header-mobile-toggle {
+    display: none !important;
+  }
+
+  .mobile-header-menu-pill {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: #334155;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: all 0.15s ease;
+    margin-right: 6px;
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  .mobile-header-menu-pill:hover,
+  .mobile-header-menu-pill:active {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+    transform: translateY(-0.5px);
   }
 }
 

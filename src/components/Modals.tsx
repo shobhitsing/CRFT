@@ -378,37 +378,21 @@ export interface EditProductModalProps {
   onUpdateProduct: (productId: string, updatedFields: Partial<Product>) => void;
 }
 
-export const EditProductModal: React.FC<EditProductModalProps> = ({
-  isOpen,
-  onClose,
-  product,
-  onUpdateProduct,
-}) => {
-  const [name, setName] = useState(product?.name || '');
-  const [brand, setBrand] = useState(product?.brand || 'Dkhoon The Emirates');
-  const [variant, setVariant] = useState(product?.variant || 'P1 · v7');
-  const [size, setSize] = useState(product?.size || '50 ml');
-  const [category, setCategory] = useState(product?.category || 'Skincare');
-  const [markets, setMarkets] = useState(product?.markets.join(', ') || 'UK, EU, UAE, KSA');
+const EditProductModalContent: React.FC<{
+  product: Product;
+  onClose: () => void;
+  onUpdateProduct: (productId: string, updatedFields: Partial<Product>) => void;
+}> = ({ product, onClose, onUpdateProduct }) => {
+  const [name, setName] = useState(product.name);
+  const [brand, setBrand] = useState(product.brand);
+  const [variant, setVariant] = useState(product.variant);
+  const [size, setSize] = useState(product.size);
+  const [category, setCategory] = useState(product.category);
+  const [markets, setMarkets] = useState(product.markets.join(', '));
   const [illustrationType, setIllustrationType] = useState<Product['illustrationType']>(
-    product?.illustrationType || 'serum'
+    product.illustrationType
   );
-  const [deadline, setDeadline] = useState(product?.deadline || '12 Sep');
-
-  React.useEffect(() => {
-    if (product) {
-      setName(product.name);
-      setBrand(product.brand);
-      setVariant(product.variant);
-      setSize(product.size);
-      setCategory(product.category);
-      setMarkets(product.markets.join(', '));
-      setIllustrationType(product.illustrationType);
-      setDeadline(product.deadline || '12 Sep');
-    }
-  }, [product]);
-
-  if (!isOpen || !product) return null;
+  const [deadline, setDeadline] = useState(product.deadline || '12 Sep');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -565,5 +549,23 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
         </form>
       </div>
     </div>
+  );
+};
+
+export const EditProductModal: React.FC<EditProductModalProps> = ({
+  isOpen,
+  onClose,
+  product,
+  onUpdateProduct,
+}) => {
+  if (!isOpen || !product) return null;
+
+  return (
+    <EditProductModalContent
+      key={product.id}
+      product={product}
+      onClose={onClose}
+      onUpdateProduct={onUpdateProduct}
+    />
   );
 };
