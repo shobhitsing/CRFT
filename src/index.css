@@ -433,6 +433,25 @@ html, body {
   font-weight: 400;
 }
 
+.header-edit-btn {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 3px 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+  margin-left: 2px;
+}
+
+.header-edit-btn:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
 .chevron-sep {
   color: #94a3b8;
   font-size: 13px;
@@ -842,6 +861,25 @@ html, body {
   letter-spacing: -0.1px;
 }
 
+.product-card-edit-btn {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.product-card-edit-btn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: scale(1.05);
+}
+
 .circular-progress-wrap {
   position: relative;
   display: inline-flex;
@@ -1156,6 +1194,27 @@ html, body {
 
 .product-list-missing-text.attention {
   color: #d97706;
+}
+
+.product-list-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.product-list-edit-btn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }
 
 .product-list-manage-link {

@@ -213,6 +213,7 @@ export function App() {
             onOpenGenie={() => setIsGenieOpen(true)}
             onSelectPortfolio={handleSelectPortfolio}
             onToggleMobileSidebar={() => setIsMobileSidebarOpen((prev) => !prev)}
+            onEditProduct={(p) => setEditingProduct(p)}
           />
         </div>
 
@@ -235,6 +236,7 @@ export function App() {
                   setIsGenieOpen(true);
                 }}
                 onToggleMobileSidebar={() => setIsMobileSidebarOpen((prev) => !prev)}
+                onEditProduct={(p) => setEditingProduct(p)}
               />
             )}
 
@@ -348,6 +350,13 @@ export function App() {
       <AISweepModal
         isOpen={isSweepModalOpen}
         onClose={() => setIsSweepModalOpen(false)}
+      />
+
+      <EditProductModal
+        isOpen={!!editingProduct}
+        product={editingProduct}
+        onClose={() => setEditingProduct(null)}
+        onUpdateProduct={handleUpdateSpecificProduct}
       />
     </div>
   );

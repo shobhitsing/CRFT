@@ -57,7 +57,9 @@ export const PackagingPage: React.FC<PackagingPageProps> = ({
       <div className="packaging-system-card">
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-[#eef2f6] gap-4">
           <div>
-            <span className="packset-badge">PACKSET-018 · VERSION 7</span>
+            <span className="packset-badge">
+              PACKSET-{product.id.slice(0, 3).toUpperCase()} · {product.variant ? product.variant.toUpperCase() : 'VERSION 7'}
+            </span>
             <h2 className="packset-title">Primary + secondary packaging system</h2>
             <p className="packset-subtitle">Unified Bill of Materials for EU PPWR & UK pEPR</p>
           </div>
