@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Check, Mail, Send, Sparkles, Plus, Edit3 } from 'lucide-react';
+import { X, Check, Mail, Send, Sparkles, Plus, Edit3, QrCode, Download, Copy, ShieldCheck } from 'lucide-react';
 import type { Product } from '../types';
 
 interface ModalProps {
@@ -567,5 +567,253 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
       onClose={onClose}
       onUpdateProduct={onUpdateProduct}
     />
+  );
+};
+
+export interface PassportModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  product: Product;
+}
+
+export const PassportModal: React.FC<PassportModalProps> = ({
+  isOpen,
+  onClose,
+  product,
+}) => {
+  const [copied, setCopied] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
+
+  if (!isOpen) return null;
+
+  const dppUrl = `https://passport.crft.io/dpp/${product.id}`;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(dppUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownloadQR = () => {
+    const svgEl = document.getElementById('passport-qr-code');
+    if (!svgEl) return;
+    const serializer = new XMLSerializer();
+    const source = serializer.serializeToString(svgEl);
+    const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `CRFT-DPP-QR-${product.id}.svg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setDownloaded(true);
+    setTimeout(() => setDownloaded(false), 2500);
+  };
+
+  return (
+    <div className="crft-modal-overlay" onClick={onClose}>
+      <div
+        className="crft-modal-card max-w-xl passport-modal-card"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="crft-modal-header border-b border-[#eef2f6]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#f5f3ff] text-[#7c3aed] flex items-center justify-center">
+              <QrCode className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-base text-[#0f172a]">
+                Digital Product Passport (DPP)
+              </h3>
+              <p className="text-[11px] text-[#64748b]">
+                EU PPWR & GS1 Digital Link Statutory Protocol
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-[#64748b] hover:text-[#0f172a]"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-5">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 p-4 bg-[#f8fafc] rounded-2xl border border-[#eef2f6]">
+            <div className="bg-white p-3 rounded-xl border border-[#e2e8f0] shadow-sm shrink-0 flex flex-col items-center">
+              <svg
+                id="passport-qr-code"
+                viewBox="0 0 120 120"
+                className="w-28 h-28"
+                fill="#0f172a"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect x="10" y="10" width="30" height="30" rx="3" fill="#0f172a" />
+                <rect x="15" y="15" width="20" height="20" rx="2" fill="#ffffff" />
+                <rect x="20" y="20" width="10" height="10" rx="1.5" fill="#0f172a" />
+
+                <rect x="80" y="10" width="30" height="30" rx="3" fill="#0f172a" />
+                <rect x="85" y="15" width="20" height="20" rx="2" fill="#ffffff" />
+                <rect x="90" y="20" width="10" height="10" rx="1.5" fill="#0f172a" />
+
+                <rect x="10" y="80" width="30" height="30" rx="3" fill="#0f172a" />
+                <rect x="15" y="85" width="20" height="20" rx="2" fill="#ffffff" />
+                <rect x="20" y="90" width="10" height="10" rx="1.5" fill="#0f172a" />
+
+                <rect x="44" y="22" width="6" height="6" rx="1" />
+                <rect x="54" y="22" width="6" height="6" rx="1" />
+                <rect x="64" y="22" width="6" height="6" rx="1" />
+                <rect x="22" y="44" width="6" height="6" rx="1" />
+                <rect x="22" y="54" width="6" height="6" rx="1" />
+                <rect x="22" y="64" width="6" height="6" rx="1" />
+
+                <rect x="46" y="46" width="6" height="6" rx="1" fill="#7c3aed" />
+                <rect x="56" y="46" width="6" height="6" rx="1" />
+                <rect x="66" y="46" width="6" height="6" rx="1" />
+                <rect x="76" y="46" width="6" height="6" rx="1" fill="#7c3aed" />
+                <rect x="46" y="56" width="6" height="6" rx="1" />
+                <rect x="56" y="56" width="8" height="8" rx="2" fill="#0f172a" />
+                <rect x="68" y="56" width="6" height="6" rx="1" />
+                <rect x="78" y="56" width="6" height="6" rx="1" fill="#7c3aed" />
+                <rect x="46" y="66" width="6" height="6" rx="1" fill="#7c3aed" />
+                <rect x="56" y="66" width="6" height="6" rx="1" />
+                <rect x="66" y="66" width="6" height="6" rx="1" />
+                <rect x="88" y="46" width="6" height="6" rx="1" />
+                <rect x="98" y="46" width="6" height="6" rx="1" />
+                <rect x="88" y="66" width="6" height="6" rx="1" />
+                <rect x="98" y="76" width="6" height="6" rx="1" />
+                <rect x="46" y="78" width="6" height="6" rx="1" />
+                <rect x="56" y="88" width="6" height="6" rx="1" />
+                <rect x="66" y="78" width="6" height="6" rx="1" />
+                <rect x="76" y="88" width="6" height="6" rx="1" />
+                <rect x="86" y="88" width="6" height="6" rx="1" fill="#7c3aed" />
+                <rect x="96" y="88" width="6" height="6" rx="1" />
+                <rect x="86" y="98" width="6" height="6" rx="1" />
+                <rect x="96" y="98" width="6" height="6" rx="1" fill="#7c3aed" />
+                <rect x="46" y="98" width="6" height="6" rx="1" />
+                <rect x="56" y="98" width="6" height="6" rx="1" />
+                <rect x="66" y="98" width="6" height="6" rx="1" />
+              </svg>
+              <span className="text-[10px] text-[#64748b] font-mono mt-1 font-semibold">
+                GS1 DIGITAL LINK
+              </span>
+            </div>
+
+            <div className="flex-1 space-y-2 text-center sm:text-left">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+                <span className="bg-[#ecfdf5] text-[#059669] text-[10.5px] font-semibold px-2 py-0.5 rounded-full border border-[#a7f3d0]">
+                  ✓ Verified Live
+                </span>
+                <span className="bg-[#f5f3ff] text-[#7c3aed] text-[10.5px] font-semibold px-2 py-0.5 rounded-full border border-[#ddd6fe]">
+                  EU PPWR Art. 11 Compliant
+                </span>
+              </div>
+              <h4 className="font-bold text-base text-[#0f172a] leading-tight">
+                {product.name}
+              </h4>
+              <p className="text-xs text-[#64748b]">
+                {product.brand} · {product.size} · {product.variant}
+              </p>
+              <div className="text-[11px] text-[#475569] font-mono bg-white px-2.5 py-1.5 rounded-lg border border-[#e2e8f0] break-all">
+                {dppUrl}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div className="p-3 bg-white rounded-xl border border-[#eef2f6] text-center">
+              <span className="text-[10px] font-semibold text-[#8c9ba5] block uppercase">
+                Recyclability
+              </span>
+              <span className="text-sm font-bold text-[#059669] block mt-0.5">
+                Grade A (94%)
+              </span>
+              <span className="text-[10px] text-[#64748b] block">Flint glass stream</span>
+            </div>
+
+            <div className="p-3 bg-white rounded-xl border border-[#eef2f6] text-center">
+              <span className="text-[10px] font-semibold text-[#8c9ba5] block uppercase">
+                CO2 Footprint
+              </span>
+              <span className="text-sm font-bold text-[#0f172a] block mt-0.5">
+                0.142 kg
+              </span>
+              <span className="text-[10px] text-[#64748b] block">Per unit lifecycle</span>
+            </div>
+
+            <div className="p-3 bg-white rounded-xl border border-[#eef2f6] text-center">
+              <span className="text-[10px] font-semibold text-[#8c9ba5] block uppercase">
+                Batch Registry
+              </span>
+              <span className="text-sm font-bold text-[#0f172a] block mt-0.5">
+                #DX-8841-B
+              </span>
+              <span className="text-[10px] text-[#64748b] block">Exp: Aug 2029</span>
+            </div>
+
+            <div className="p-3 bg-white rounded-xl border border-[#eef2f6] text-center">
+              <span className="text-[10px] font-semibold text-[#8c9ba5] block uppercase">
+                EU CPNP
+              </span>
+              <span className="text-sm font-bold text-[#7c3aed] block mt-0.5">
+                #4109823
+              </span>
+              <span className="text-[10px] text-[#64748b] block">UK OPSS Active</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-3 bg-[#f0fdf4] rounded-xl border border-[#bbf7d0]">
+            <ShieldCheck className="w-5 h-5 text-[#16a34a] shrink-0" />
+            <div className="text-xs text-[#166534]">
+              <span className="font-semibold block">Cryptographically Signed DPP Evidence</span>
+              <span>
+                Immutable proof logged in CRFT Evidence Vault under hash <code>0x98f2...b71c</code>.
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#e2e8f0]">
+            <button
+              type="button"
+              onClick={handleCopyLink}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl border border-[#cbd5e1] hover:bg-[#f8fafc] text-[#1e293b] transition-all"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-[#059669]" />
+                  <span>Public Link Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-[#64748b]" />
+                  <span>Copy Public DPP Link</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleDownloadQR}
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-[#0f172a] hover:bg-[#1e293b] text-white transition-all shadow-sm"
+            >
+              {downloaded ? (
+                <>
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Downloaded!</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download QR Code (.SVG)</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

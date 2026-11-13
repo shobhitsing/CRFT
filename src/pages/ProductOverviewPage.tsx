@@ -5,11 +5,16 @@ import {
   Box,
   FileText,
   ShoppingBag,
-  Globe
+  Globe,
+  QrCode,
+  Check,
+  CheckCircle2,
+  RotateCcw
 } from 'lucide-react';
 import type { Product, ProductLayer } from '../types';
 import { ProductIllustration } from '../components/ProductIllustration';
 import { CircularProgress } from '../components/CircularProgress';
+import { PassportModal } from '../components/Modals';
 
 interface ProductOverviewPageProps {
   product: Product;
@@ -34,6 +39,34 @@ export const ProductOverviewPage: React.FC<ProductOverviewPageProps> = ({
   const [editName, setEditName] = useState(product.name);
   const [editSize, setEditSize] = useState(product.size);
   const [editCategory, setEditCategory] = useState(product.category || 'Skincare');
+  const [isPassportOpen, setIsPassportOpen] = useState(false);
+
+  const handleResolveMissingItem = (itemId: string) => {
+    const currentList = product.missingItems && product.missingItems.length > 0
+      ? product.missingItems
+      : defaultMissingItems;
+    const updatedMissing = currentList.filter((m) => m.id !== itemId);
+    const newMissingCount = updatedMissing.length;
+    const newReadiness = newMissingCount === 0 ? 100 : Math.min(99, product.readiness + 5);
+
+    if (onUpdateProduct) {
+      onUpdateProduct({
+        missingItems: updatedMissing,
+        missingCount: newMissingCount,
+        readiness: newReadiness,
+      });
+    }
+  };
+
+  const handleResetMissingItems = () => {
+    if (onUpdateProduct) {
+      onUpdateProduct({
+        missingItems: defaultMissingItems,
+        missingCount: defaultMissingItems.length,
+        readiness: 91,
+      });
+    }
+  };
 
   const handleOpenEdit = (layer: ProductLayer) => {
     setEditingLayer(layer);
@@ -168,6 +201,15 @@ export const ProductOverviewPage: React.FC<ProductOverviewPageProps> = ({
 
         <div className="hero-product-right">
           <CircularProgress value={product.readiness} size={56} strokeWidth={4.5} />
+          <button
+            type="button"
+            className="overview-passport-btn"
+            onClick={() => setIsPassportOpen(true)}
+            title="Open EU Digital Product Passport & QR Code"
+          >
+            <QrCode className="w-3.5 h-3.5 text-[#7c3aed]" />
+            <span>Digital Passport</span>
+          </button>
         </div>
       </div>
 
@@ -204,76 +246,128 @@ export const ProductOverviewPage: React.FC<ProductOverviewPageProps> = ({
 
       <div className="whats-missing-section">
         <div className="whats-missing-header">
-          <h2 className="whats-missing-title">What's missing</h2>
-          <span className="whats-missing-subtitle">One action each. Nothing else to read.</span>
+          <div className="flex items-center gap-3">
+            <h2 className="whats-missing-title">What's missing</h2>
+            <span className="whats-missing-subtitle">One action each. Nothing else to read.</span>
+          </div>
+          {missingItemsToRender.length < defaultMissingItems.length && (
+            <button
+              type="button"
+              className="text-xs text-[#64748b] hover:text-[#0f172a] inline-flex items-center gap-1 font-medium"
+              onClick={handleResetMissingItems}
+              title="Reset all tasks to original state"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset tasks</span>
+            </button>
+          )}
         </div>
 
-        <div className="whats-missing-list">
-          {missingItemsToRender.map((item) => (
-            <div key={item.id} className="missing-item-row">
-              <div className="missing-item-info">
-                <span className="missing-dot" />
-                <div>
-                  <h4 className="missing-item-title">{item.title}</h4>
-                  <p className="missing-item-desc">{item.description}</p>
-                </div>
+        {missingItemsToRender.length === 0 ? (
+          <div className="whats-missing-completed-card">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#ecfdf5] text-[#059669] flex items-center justify-center shrink-0 border border-[#a7f3d0]">
+                <CheckCircle2 className="w-5 h-5" />
               </div>
-
-              <div className="missing-item-actions">
-                {item.actions.primary === 'Ask my supplier' && (
-                  <button
-                    type="button"
-                    className="missing-btn-primary"
-                    onClick={onOpenSupplierModal}
-                  >
-                    Ask my supplier
-                  </button>
-                )}
-
-                {item.actions.primary === 'Nudge' && (
-                  <button
-                    type="button"
-                    className="missing-btn-outline"
-                    onClick={onOpenNudgeModal}
-                  >
-                    Nudge
-                  </button>
-                )}
-
-                {item.actions.primary && !['Ask my supplier', 'Nudge'].includes(item.actions.primary) && (
-                  <button
-                    type="button"
-                    className="missing-btn-outline"
-                    onClick={onOpenSupplierModal}
-                  >
-                    {item.actions.primary}
-                  </button>
-                )}
-
-                {item.actions.secondary && (
-                  <button
-                    type="button"
-                    className="missing-btn-outline"
-                    onClick={onOpenGenie}
-                  >
-                    {item.actions.secondary}
-                  </button>
-                )}
-
-                {item.actions.tertiary && (
-                  <button
-                    type="button"
-                    className="missing-btn-outline"
-                    onClick={() => alert(`Marked '${item.title}' as Not Applicable for this target market.`)}
-                  >
-                    {item.actions.tertiary}
-                  </button>
-                )}
+              <div>
+                <h4 className="font-semibold text-sm text-[#0f172a]">All Requirements Fulfilled (100% Ready)</h4>
+                <p className="text-xs text-[#64748b]">Zero blocking compliance tasks. Digital Product Passport is fully approved.</p>
               </div>
             </div>
-          ))}
-        </div>
+            <button
+              type="button"
+              className="whats-missing-reset-btn"
+              onClick={handleResetMissingItems}
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Re-audit Tasks</span>
+            </button>
+          </div>
+        ) : (
+          <div className="whats-missing-list">
+            {missingItemsToRender.map((item) => (
+              <div key={item.id} className="missing-item-row">
+                <div className="missing-item-info">
+                  <span className="missing-dot" />
+                  <div>
+                    <h4 className="missing-item-title">{item.title}</h4>
+                    <p className="missing-item-desc">{item.description}</p>
+                  </div>
+                </div>
+
+                <div className="missing-item-actions">
+                  {item.actions.primary === 'Ask my supplier' && (
+                    <button
+                      type="button"
+                      className="missing-btn-primary"
+                      onClick={onOpenSupplierModal}
+                    >
+                      Ask my supplier
+                    </button>
+                  )}
+
+                  {item.actions.primary === 'Nudge' && (
+                    <button
+                      type="button"
+                      className="missing-btn-outline"
+                      onClick={onOpenNudgeModal}
+                    >
+                      Nudge
+                    </button>
+                  )}
+
+                  {item.actions.primary && !['Ask my supplier', 'Nudge'].includes(item.actions.primary) && (
+                    <button
+                      type="button"
+                      className="missing-btn-outline"
+                      onClick={onOpenSupplierModal}
+                    >
+                      {item.actions.primary}
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    className="missing-btn-resolve"
+                    onClick={() => handleResolveMissingItem(item.id)}
+                    title="Mark resolved and boost readiness"
+                  >
+                    <Check className="w-3 h-3 text-[#059669]" />
+                    <span>Resolve</span>
+                  </button>
+
+                  {item.actions.secondary && (
+                    <button
+                      type="button"
+                      className="missing-btn-outline"
+                      onClick={onOpenGenie}
+                    >
+                      {item.actions.secondary}
+                    </button>
+                  )}
+
+                  {item.actions.tertiary && (
+                    <button
+                      type="button"
+                      className="missing-btn-outline"
+                      onClick={() => handleResolveMissingItem(item.id)}
+                      title="Mark as not applicable for this market"
+                    >
+                      {item.actions.tertiary}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+
+      <PassportModal
+        isOpen={isPassportOpen}
+        onClose={() => setIsPassportOpen(false)}
+        product={product}
+      />
 
       {editingLayer && (
         <div

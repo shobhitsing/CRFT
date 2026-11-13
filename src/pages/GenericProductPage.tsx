@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Sparkles, 
   Leaf, 
@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import type { Product, MainNavId } from '../types';
 import { AIBanner } from '../components/AIBanner';
+import { PassportModal } from '../components/Modals';
 
 interface GenericProductPageProps {
   navId: MainNavId;
@@ -25,6 +26,7 @@ export const GenericProductPage: React.FC<GenericProductPageProps> = ({
   onOpenGenie,
   onOpenSweep,
 }) => {
+  const [isPassportModalOpen, setIsPassportModalOpen] = useState(false);
   const getPageConfig = () => {
     switch (navId) {
       case 'sustainability':
@@ -170,6 +172,36 @@ export const GenericProductPage: React.FC<GenericProductPageProps> = ({
           </div>
         ))}
       </div>
+
+      {navId === 'passport' && (
+        <div className="p-6 bg-white rounded-2xl border border-[#eef2f6] shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 mt-4">
+          <div>
+            <span className="text-[11px] font-semibold text-[#7c3aed] uppercase tracking-wider block mb-1">
+              Active Passport Gateway
+            </span>
+            <h3 className="text-base font-bold text-[#0f172a]">
+              GS1 Digital Link · EU Single Market QR
+            </h3>
+            <p className="text-xs text-[#64748b] mt-0.5">
+              Scan-ready SVG vector QR code compliant with ISO 18004 and EU PPWR Article 11.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="px-5 py-2.5 bg-[#0f172a] hover:bg-[#1e293b] text-white text-xs font-semibold rounded-xl flex items-center gap-2 shrink-0 transition-all shadow-sm"
+            onClick={() => setIsPassportModalOpen(true)}
+          >
+            <QrCode className="w-4 h-4 text-white" />
+            <span>Open Passport & QR</span>
+          </button>
+        </div>
+      )}
+
+      <PassportModal
+        isOpen={isPassportModalOpen}
+        onClose={() => setIsPassportModalOpen(false)}
+        product={product}
+      />
     </div>
   );
 };
