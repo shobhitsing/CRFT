@@ -618,13 +618,13 @@ export const PassportModal: React.FC<PassportModalProps> = ({
         className="crft-modal-card max-w-xl passport-modal-card"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="crft-modal-header border-b border-[#eef2f6]">
+        <div className="crft-modal-header border-b border-[#f1f5f9] px-5 py-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#f5f3ff] text-[#7c3aed] flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-[#f5f3ff] text-[#7c3aed] flex items-center justify-center shadow-2xs">
               <QrCode className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-semibold text-base text-[#0f172a]">
+              <h3 className="font-bold text-sm text-[#0f172a] leading-tight">
                 Digital Product Passport (DPP)
               </h3>
               <p className="text-[11px] text-[#64748b]">
@@ -635,19 +635,19 @@ export const PassportModal: React.FC<PassportModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-[#64748b] hover:text-[#0f172a]"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-[#64748b] hover:text-[#0f172a] hover:bg-[#f1f5f9] transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 p-4 bg-[#f8fafc] rounded-2xl border border-[#eef2f6]">
-            <div className="bg-white p-3 rounded-xl border border-[#e2e8f0] shadow-sm shrink-0 flex flex-col items-center">
+        <div className="p-4 sm:p-5 space-y-3.5">
+          <div className="flex flex-col sm:flex-row items-center sm:items-stretch gap-4 p-3.5 bg-[#f8fafc] rounded-xl border border-[#eef2f6]">
+            <div className="bg-white p-2.5 rounded-lg border border-[#e2e8f0] shadow-xs flex flex-col items-center justify-center shrink-0 w-32">
               <svg
                 id="passport-qr-code"
                 viewBox="0 0 120 120"
-                className="w-28 h-28"
+                className="w-20 h-20"
                 fill="#0f172a"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -697,89 +697,111 @@ export const PassportModal: React.FC<PassportModalProps> = ({
                 <rect x="56" y="98" width="6" height="6" rx="1" />
                 <rect x="66" y="98" width="6" height="6" rx="1" />
               </svg>
-              <span className="text-[10px] text-[#64748b] font-mono mt-1 font-semibold">
+              <span className="text-[9px] text-[#64748b] font-mono mt-1.5 font-bold tracking-wider uppercase px-1.5 py-0.5 bg-[#f1f5f9] rounded">
                 GS1 DIGITAL LINK
               </span>
             </div>
 
-            <div className="flex-1 space-y-2 text-center sm:text-left">
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
-                <span className="bg-[#ecfdf5] text-[#059669] text-[10.5px] font-semibold px-2 py-0.5 rounded-full border border-[#a7f3d0]">
-                  ✓ Verified Live
-                </span>
-                <span className="bg-[#f5f3ff] text-[#7c3aed] text-[10.5px] font-semibold px-2 py-0.5 rounded-full border border-[#ddd6fe]">
-                  EU PPWR Art. 11 Compliant
-                </span>
+            <div className="flex-1 min-w-0 flex flex-col justify-between text-center sm:text-left py-0.5">
+              <div>
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mb-1.5">
+                  <span className="inline-flex items-center gap-1 bg-[#ecfdf5] text-[#059669] text-[11px] font-semibold px-2 py-0.5 rounded-full border border-[#a7f3d0]">
+                    <Check className="w-3 h-3 text-[#059669]" />
+                    Verified Live
+                  </span>
+                  <span className="bg-[#f5f3ff] text-[#7c3aed] text-[11px] font-semibold px-2 py-0.5 rounded-full border border-[#ddd6fe]">
+                    EU PPWR Art. 11 Compliant
+                  </span>
+                </div>
+
+                <h4 className="font-bold text-[13px] text-[#0f172a] tracking-tight truncate">
+                  {product.name}
+                </h4>
+                <p className="text-[11px] text-[#64748b] font-medium mt-0.5">
+                  {product.brand} · {product.size} · {product.variant}
+                </p>
               </div>
-              <h4 className="font-bold text-base text-[#0f172a] leading-tight">
-                {product.name}
-              </h4>
-              <p className="text-xs text-[#64748b]">
-                {product.brand} · {product.size} · {product.variant}
-              </p>
-              <div className="text-[11px] text-[#475569] font-mono bg-white px-2.5 py-1.5 rounded-lg border border-[#e2e8f0] break-all">
-                {dppUrl}
+
+              <div className="mt-2">
+                <div className="flex items-center justify-between gap-2 text-xs text-[#334155] font-mono bg-white px-2.5 py-1.5 rounded-lg border border-[#cbd5e1]/80 shadow-2xs">
+                  <span className="truncate text-[11px]">{dppUrl}</span>
+                  <button
+                    type="button"
+                    onClick={handleCopyLink}
+                    className="p-1 hover:bg-[#f1f5f9] rounded-md text-[#64748b] hover:text-[#0f172a] transition-colors shrink-0"
+                    title="Copy Link"
+                  >
+                    {copied ? (
+                      <Check className="w-3.5 h-3.5 text-[#059669]" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            <div className="p-3 bg-white rounded-xl border border-[#eef2f6] text-center">
-              <span className="text-[10px] font-semibold text-[#8c9ba5] block uppercase">
+            <div className="p-2 bg-white rounded-xl border border-[#e2e8f0] shadow-2xs hover:border-[#cbd5e1] transition-all text-center">
+              <span className="text-[8.5px] font-bold text-[#8c9ba5] block uppercase tracking-wider">
                 Recyclability
               </span>
-              <span className="text-sm font-bold text-[#059669] block mt-0.5">
+              <span className="text-xs font-bold text-[#059669] block mt-0.5">
                 Grade A (94%)
               </span>
-              <span className="text-[10px] text-[#64748b] block">Flint glass stream</span>
+              <span className="text-[9.5px] text-[#64748b] block">Flint glass stream</span>
             </div>
 
-            <div className="p-3 bg-white rounded-xl border border-[#eef2f6] text-center">
-              <span className="text-[10px] font-semibold text-[#8c9ba5] block uppercase">
+            <div className="p-2 bg-white rounded-xl border border-[#e2e8f0] shadow-2xs hover:border-[#cbd5e1] transition-all text-center">
+              <span className="text-[8.5px] font-bold text-[#8c9ba5] block uppercase tracking-wider">
                 CO2 Footprint
               </span>
-              <span className="text-sm font-bold text-[#0f172a] block mt-0.5">
+              <span className="text-xs font-bold text-[#0f172a] block mt-0.5">
                 0.142 kg
               </span>
-              <span className="text-[10px] text-[#64748b] block">Per unit lifecycle</span>
+              <span className="text-[9.5px] text-[#64748b] block">Per unit lifecycle</span>
             </div>
 
-            <div className="p-3 bg-white rounded-xl border border-[#eef2f6] text-center">
-              <span className="text-[10px] font-semibold text-[#8c9ba5] block uppercase">
+            <div className="p-2 bg-white rounded-xl border border-[#e2e8f0] shadow-2xs hover:border-[#cbd5e1] transition-all text-center">
+              <span className="text-[8.5px] font-bold text-[#8c9ba5] block uppercase tracking-wider">
                 Batch Registry
               </span>
-              <span className="text-sm font-bold text-[#0f172a] block mt-0.5">
+              <span className="text-xs font-bold text-[#0f172a] block mt-0.5 font-mono">
                 #DX-8841-B
               </span>
-              <span className="text-[10px] text-[#64748b] block">Exp: Aug 2029</span>
+              <span className="text-[9.5px] text-[#64748b] block">Exp: Aug 2029</span>
             </div>
 
-            <div className="p-3 bg-white rounded-xl border border-[#eef2f6] text-center">
-              <span className="text-[10px] font-semibold text-[#8c9ba5] block uppercase">
+            <div className="p-2 bg-white rounded-xl border border-[#e2e8f0] shadow-2xs hover:border-[#cbd5e1] transition-all text-center">
+              <span className="text-[8.5px] font-bold text-[#8c9ba5] block uppercase tracking-wider">
                 EU CPNP
               </span>
-              <span className="text-sm font-bold text-[#7c3aed] block mt-0.5">
+              <span className="text-xs font-bold text-[#7c3aed] block mt-0.5 font-mono">
                 #4109823
               </span>
-              <span className="text-[10px] text-[#64748b] block">UK OPSS Active</span>
+              <span className="text-[9.5px] text-[#64748b] block">UK OPSS Active</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 bg-[#f0fdf4] rounded-xl border border-[#bbf7d0]">
-            <ShieldCheck className="w-5 h-5 text-[#16a34a] shrink-0" />
-            <div className="text-xs text-[#166534]">
-              <span className="font-semibold block">Cryptographically Signed DPP Evidence</span>
-              <span>
-                Immutable proof logged in CRFT Evidence Vault under hash <code>0x98f2...b71c</code>.
-              </span>
+          <div className="flex items-center gap-2.5 px-3 py-2 bg-[#f0fdf4] rounded-xl border border-[#bbf7d0]/60 text-xs">
+            <div className="w-6 h-6 rounded-md bg-[#dcfce7] text-[#16a34a] flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-3.5 h-3.5" />
+            </div>
+            <div className="text-[11.5px] text-[#166534] leading-normal flex-1 truncate">
+              <span className="font-semibold text-[#14532d]">Signed DPP Evidence: </span>
+              <span>Vault hash</span>
+              <code className="bg-[#dcfce7] text-[#15803d] font-mono px-1.5 py-0.5 rounded text-[10px] font-semibold border border-[#86efac]/40 ml-1">
+                0x98f2...b71c
+              </code>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#e2e8f0]">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-[#f1f5f9]">
             <button
               type="button"
               onClick={handleCopyLink}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl border border-[#cbd5e1] hover:bg-[#f8fafc] text-[#1e293b] transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg border border-[#cbd5e1] bg-white hover:bg-[#f8fafc] text-[#1e293b] shadow-2xs transition-all"
             >
               {copied ? (
                 <>
@@ -797,7 +819,7 @@ export const PassportModal: React.FC<PassportModalProps> = ({
             <button
               type="button"
               onClick={handleDownloadQR}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-[#0f172a] hover:bg-[#1e293b] text-white transition-all shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2 text-xs font-semibold rounded-lg bg-[#0f172a] hover:bg-[#1e293b] text-white shadow-xs transition-all"
             >
               {downloaded ? (
                 <>

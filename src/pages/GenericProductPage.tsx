@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  Sparkles, 
-  Leaf, 
-  Compass, 
-  QrCode, 
-  ShoppingBag, 
-  Store, 
-  FileBadge, 
+import {
+  Sparkles,
+  Leaf,
+  Compass,
+  QrCode,
+  ShoppingBag,
+  Store,
+  FileBadge,
   CheckCircle2
 } from 'lucide-react';
 import type { Product, MainNavId } from '../types';
