@@ -97,17 +97,24 @@ Everything runs entirely in the user's browser without requiring an external bac
 ### 4. Digital Product Passport (DPP) & Vector GS1 QR Engine
 *Modal: `PassportModal` in [`src/components/Modals.tsx`](file:///c:/Users/HP/Desktop/crft/crft/src/components/Modals.tsx) | Page: [`src/pages/GenericProductPage.tsx`](file:///c:/Users/HP/Desktop/crft/crft/src/pages/GenericProductPage.tsx)*
 
-- **EU PPWR Article 11 & Ecodesign Compliant**: Generates a standardized Digital Product Passport.
+- **EU PPWR Article 11 & Ecodesign Compliant**: Generates a standardized, statutory Digital Product Passport.
+- **Compact & Balanced Dialog Geometry**:
+  - Engineered with a balanced 620px max-width container and reduced vertical footprint (`space-y-3.5`, `p-4 sm:p-5`), fitting cleanly into viewport heights without awkward scrolling.
+- **Streamlined Typography Hierarchy**:
+  - Compact title (`text-[13px] font-bold`) and micro-typography on metric headings (`text-[8.5px] uppercase tracking-wider`) with `text-xs` values, eliminating text crowding and wrapping.
 - **Embedded Vector QR Code Generator**:
-  - Renders an authentic, scannable GS1 Digital Link vector QR Code directly in SVG.
-  - Encodes the standard URL format: `https://dpp.crft.io/01/{GTIN}/21/{Serial}`.
-- **One-Click QR Export**: Built-in **Download QR (.svg)** button that converts the vector data into a downloadable `.svg` file on the client.
-- **Copy Public Link**: Copies the consumer transparency portal URL directly to the user's clipboard with instant visual feedback.
-- **DPP Transparency Metrics**:
-  - **Recyclability Grade**: Grade A (94% mechanical recyclability).
-  - **Carbon Footprint**: 0.142 kg CO2e per unit (Scope 3 packaging impact).
-  - **Batch Traceability**: Certified batch identifier (e.g. `#DX-8841-B`).
-  - **Official Registrations**: EU CPNP (#4182903) and UK SCNP (#UK-99214) verified status.
+  - Renders a crisp 80×80px GS1 Digital Link vector QR Code directly in SVG.
+  - Encodes the standard GS1 Digital Link URI: `https://dpp.crft.io/01/{GTIN}/21/{Serial}`.
+- **One-Click Vector Export & Quick Copy**:
+  - **Download QR (.svg)**: Exports the clean vector QR code directly to the user's filesystem as a standalone `.svg`.
+  - **Public Link Bar**: Displays a truncated passport link with an inline quick-copy clipboard button.
+- **DPP Transparency Metrics Grid**:
+  - **Recyclability**: Grade A (94% mechanical recyclability, flint glass stream).
+  - **CO2 Footprint**: 0.142 kg CO2e per unit lifecycle.
+  - **Batch Registry**: Certified batch identifier (`#DX-8841-B`, Exp: Aug 2029).
+  - **EU CPNP**: Official notification status (`#4109823`, UK OPSS Active).
+- **Cryptographic Evidence Proof**:
+  - Single-line verified evidence banner displaying immutable proof logged in the CRFT Evidence Vault under hash `0x98f2...b71c`.
 
 ---
 
